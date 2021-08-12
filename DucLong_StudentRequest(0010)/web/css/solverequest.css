@@ -1,0 +1,153 @@
+.navigation{
+    padding-top: 71px;
+}
+body{
+    margin-top: 0px;
+}
+.container{
+    margin: auto;
+    width: 980px;
+}
+.header{
+    width: 980px;
+    background-image: url(../images/front.jpg);
+    background-repeat: no-repeat;
+}
+.header h1{
+    margin-top: 0px;
+    color: white;
+    text-align: center;
+    padding-top: 15px;
+}
+.header h3{
+    color: white;
+    text-align: center;
+    margin-top: 0px;
+}
+.tille{
+    color: #1772b2;
+    text-align: center;
+    font-size: 24px;
+    padding-top: 15px;
+}
+.sub_title{
+    text-align: center;
+    font-family: arial;
+    padding-top: 10px;
+}
+.login {
+    margin: auto;
+    width: 980px;
+    height: auto;
+    display: flex;
+}
+.centerTable{
+    margin: 0px auto;
+}
+.vertical-center {
+    justify-content: center;
+    display: flex;
+}
+.require{
+    justify-content: center;
+    display: flex;
+}
+table{
+    padding-top: 10px;
+}
+table span{
+    color: red;
+}
+table tr{
+    height: 50px;
+}
+span{
+    color: red;
+}
+.login button{
+    width: 100px;
+}
+
+.panel{
+    display: flex;
+}
+.formLogin{
+    width: 652px;
+}
+.navigation a{
+    color: black;
+    text-decoration: none;
+    background-color: #f1f1f1;
+    display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    border: 1px solid lightgrey;
+    width: 140px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+}
+.title{
+    color: #0574b6;
+    font-size: 20px;
+    margin-left: 25px;
+    margin-top: 15px;
+}
+.list_request{
+    margin-top: 10px;
+    margin-left: 31px;
+    width: 600px;
+    height: auto;
+}
+.header_request{
+    width: 600px;
+    height: auto;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    background-color: lightgray;
+}
+.show_request table{
+    font-size: 15px;
+    font-family: arial;
+    margin-left: 90px;
+}
+.show_request table tr td:first-child{
+    text-align: right;
+}
+.show_request input[type=text], input[type=date], textarea{
+    width: 200px;
+    padding: 12px 20px;
+    height: 32px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+.show_request textarea{
+    width: 366px;
+    padding: 12px 20px;
+    height: 100px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+.show_request button{
+    width: auto;
+    color: black;
+    padding: 10px 20px;
+    margin: 8px 0;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 313px;
+    background: linear-gradient(
+        180deg
+        , rgba(255,255,255,1) 0%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 52%, rgba(135,135,135,1) 100%);
+}
+#readonly{
+    background-color: lightgray;
+}
