@@ -64,11 +64,32 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            String action = request.getParameter("action");
             DAO dao = new DAO();
-            List<Product> list = dao.getAllProduct();
+            switch (action) {
+                case "search":
+                    String pageSearch = request.getParameter("page") == null ? "1" : request.getParameter("page");
+                    String txtSearch = request.getParameter("search");
+                    int endPageSearch = (dao.countTotalProduct(txtSearch) / 3) + (dao.countTotalProduct(txtSearch) % 3 == 0 ? 0 : 1);
+                    List<Product> listSearch = dao.searchProduct(Integer.parseInt(pageSearch), txtSearch);
 
-            request.setAttribute("listP", list);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+                    request.setAttribute("txt", txtSearch);
+                    request.setAttribute("page", pageSearch);
+                    request.setAttribute("endPageSearch", endPageSearch);
+                    request.setAttribute("listP", listSearch);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    break;
+                default:
+                    String page = request.getParameter("page") == null ? "1" : request.getParameter("page");
+                    int endPage = (dao.countTotalProduct() / 3) + (dao.countTotalProduct() % 3 == 0 ? 0 : 1);
+                    List<Product> list = dao.getAllProduct(Integer.parseInt(page));
+
+                    request.setAttribute("page", page);
+                    request.setAttribute("endPage", endPage);
+                    request.setAttribute("listP", list);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -97,12 +118,12 @@ public class ProductController extends HttpServlet {
                     double price = Double.parseDouble(request.getParameter("productprice"));
 
                     dao.addProduct(name, image, price);
-                    response.sendRedirect("product");
+                    response.sendRedirect("product?action=null");
                     break;
                 case "delete":
                     String id = request.getParameter("productId");
                     dao.deleteProduct(id);
-                    response.sendRedirect("product");
+                    response.sendRedirect("product?action=null");
                     break;
                 case "edit":
                     String pid = request.getParameter("productid");
@@ -110,10 +131,27 @@ public class ProductController extends HttpServlet {
                     String pimage = request.getParameter("productimage");
                     String pprice = request.getParameter("productprice");
                     dao.editProduct(pid, pname, pimage, pprice);
-                    response.sendRedirect("product");
+                    response.sendRedirect("product?action=null");
+                    break;
+                case "search":
+                    String page = request.getParameter("page") == null ? "1" : request.getParameter("page");
+                    String txtSearch = request.getParameter("search");
+                    int endPage = (dao.countTotalProduct(txtSearch) / 3) + (dao.countTotalProduct(txtSearch) % 3 == 0 ? 0 : 1);
+                    List<Product> list = dao.searchProduct(Integer.parseInt(page), txtSearch);
+
+                    if (list.size() == 0) {
+                        request.setAttribute("notfound", "Not found");
+                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                        return;
+                    }
+                    request.setAttribute("txt", txtSearch);
+                    request.setAttribute("page", page);
+                    request.setAttribute("endPageSearch", endPage);
+                    request.setAttribute("listP", list);
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
                     break;
                 default:
-                    response.sendRedirect("product");
+                    response.sendRedirect("product?action=null");
             }
 
         } catch (Exception ex) {

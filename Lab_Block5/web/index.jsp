@@ -12,6 +12,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -20,6 +23,31 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <style>
+            .topnav .search-container {
+                float: right;
+            }
+
+            .topnav input[type=text] {
+                padding: 6px;
+                margin-top: 8px;
+                font-size: 17px;
+                border: none;
+            }
+
+            .topnav .search-container button {
+                float: right;
+                padding: 6px 10px;
+                margin-top: 8px;
+                margin-right: 16px;
+                background: #ddd;
+                font-size: 17px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .topnav .search-container button:hover {
+                background: #ccc;
+            }
             body {
                 color: #566787;
                 background: #f5f5f5;
@@ -269,14 +297,26 @@
                     }
                 });
             });
-        </script>
+                </script><jsp:useBean id="dal" scope="page" class="dal.DAO" />
     </head>
     <body>
+
         <div class="container-xl">
+
             <div class="table-responsive">
+                <div class="topnav">
+                    <div class="search-container">
+                        <form action="product?action=search" method="POST">
+                            <input type="text" placeholder="Search.." name="search">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
+
                             <div class="col-sm-6">
                                 <h2>Manage <b>Product</b></h2>
                             </div>
@@ -285,43 +325,71 @@
                             </div>
                         </div>
                     </div>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Image</th>
-                                <th>Price</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="o" items="${listP}">
+                    <c:if test="${listP==null}">
+                        <h3 style="color: red;"> Not found</h3>
+                    </c:if>
+                    <c:if test="${listP!=null}">
+                        <table class="table table-striped table-hover">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        ${o.id}
-                                    </td>
-                                    <td>
-                                        ${o.name}
-                                    </td>
-                                    <td>
-                                        <img width="200px" height="150px" 
-                                             src="${o.image}"/>
-                                    </td>
-                                    <td>
-                                        ${o.getPriceVND()} VND
-                                    </td>
-                                    <td>
-                                        <a href="#editEmployeeModal" onclick="editProduct('${o.name}', '${o.image}', ${o.price}, ${o.id})" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                        <a href="#deleteEmployeeModal" class="delete" onclick="getProductId(${o.id})" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Image</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
                                 </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="o" items="${listP}">
+                                    <tr>
+                                        <td>
+                                            ${o.id}
+                                        </td>
+                                        <td>
+                                            ${o.name}
+                                        </td>
+                                        <td>
+                                            <img width="200px" height="150px" 
+                                                 src="${o.image}"/>
+                                        </td>
+                                        <td>
+                                            ${o.getPriceVND()} VND
+                                        </td>
+                                        <td>
+                                            <a href="#editEmployeeModal" onclick="editProduct('${o.name}', '${o.image}', ${o.price}, ${o.id})" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a href="#deleteEmployeeModal" class="delete" onclick="getProductId(${o.id})" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:if>
+                    <c:if test="${endPage!=null}">
+                        <div class="container">
+                            <ul class="pagination">
+                                <c:forEach var="i" begin="1" end="${endPage}">
+                                    <li class="${page==i?"active":""}"><a href="product?action=null&page=${i}">${i}</a></li>
+                                    </c:forEach>
+                            </ul>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${endPageSearch!=null}">
+                        <div class="container">
+                            <ul class="pagination">
+                                <c:forEach var="i" begin="1" end="${endPageSearch}">
+                                    <li class="${page==i?"active":""}"><a href="product?action=search&search=${txt}&page=${i}">${i}</a></li>
+                                    </c:forEach>
+                            </ul>
+                        </div>
+                    </c:if>
                 </div>
+
             </div>        
         </div>
+        <!--<li class="active"><a href="#">2</a></li>-->
+
+
         <div id="addEmployeeModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -408,7 +476,13 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            <ul class="pagination">
+                <h3>Total View: ${dal.viewPage}</h3>
+            </ul>
+        </div>
     </body>
+
     <script>
         function getProductId(productId) {
             document.getElementById("targetDel").innerHTML = "Delete Product ID: " + productId;
